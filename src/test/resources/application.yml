@@ -1,0 +1,48 @@
+eyes-storage:
+  enable: true
+  fail-mode: fast
+  fail-retry: 2
+  source:
+    minio:
+      enable: true
+      roles:
+          - read
+          - write
+          - delete
+      endpoint: https://oss.eyescode.top:9010
+      accessKey:
+      secretKey:
+      bucket: scratch
+    qiniu:
+      enable: true
+      roles:
+        - write
+      endpoint: http://smmqxkjnb.hn-bkt.clouddn.com
+      accessKey:
+      secretKey:
+      bucket: eyes-test
+      region: HuaNan
+      put-compress: true
+    tencent:
+      enable: true
+      roles:
+        - write
+      endpoint: https://test-1305182252.cos.ap-guangzhou.myqcloud.com
+      accessKey:
+      secretKey:
+      bucket: test-1305182252
+      region: ap-guangzhou
+      put-compress: true
+    aliyun:
+      enable: true
+      roles:
+        - write
+      endpoint: https://oss-cn-hangzhou.aliyuncs.com
+      accessKey:
+      secretKey:
+      bucket: eyes-test
+      region: cn-hangzhou
+      put-compress: true
+
+
+
