@@ -28,11 +28,11 @@
     </developer>
   </developers>
 
-<!--  <scm>-->
-<!--    <connection>https://gitee.com/wangfugui-ma/aliyun-oss-spring-boot-starter.git</connection>-->
-<!--    <developerConnection>scm:git:ssh://git@gitee.com:wangfugui-ma/aliyun-oss-spring-boot-starter.git</developerConnection>-->
-<!--    <url>https://gitee.com/wangfugui-ma/aliyun-oss-spring-boot-starter</url>-->
-<!--  </scm>-->
+  <scm>
+    <connection>https://github.com/eyesyeager/eyesStorage-spring-boot-starter.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com:eyesyeager/eyesStorage-spring-boot-starter.git</developerConnection>
+    <url>https://github.com/eyesyeager/eyesStorage-spring-boot-starter</url>
+  </scm>
 
   <parent>
     <groupId>org.springframework.boot</groupId>
