@@ -2,7 +2,17 @@
 
 # 快速开始
 
-使用时直接在项目中配置即可。
+先引入最新版的 maven 包：
+
+```xml
+<dependency>
+    <groupId>io.github.eyesyeager</groupId>
+    <artifactId>eyesStorage-spring-boot-starter</artifactId>
+    <version>1.0.0</version>
+</dependency>
+```
+
+然后在配置文件中按如下规则配置：
 
 ```yaml
 eyes-storage:
@@ -69,4 +79,63 @@ eyes-storage:
 #     - HuaNan 华南
 #     - BeiMei 北美
 #     - DongNanYa 东南亚
+```
+
+配置完后，即可在项目中使用：
+
+```java
+/**
+ * 实现了主备存储，可以理解为下面所有具体存储源的集合
+ * 例如下面的配置：
+ *      source:
+ *        tencent:
+ *          role:
+ *            - read
+ *            - write
+ *            - delete
+ *        aliyun:
+ *          role:
+ *            - write
+ *  此时：
+ *    - 读取文件信息、下载文件：从 tencent 源进行
+ *    - 上传文件：同时上传到 tencent 与 aliyun
+ *    - 删除文件：仅删除 tencent
+ */
+@Resource
+private EyesOssStorage storage;
+
+/**
+ * 仅操作 tencent 源，其操作不受 role 配置限制
+ */
+@Resource
+private TencentOssStorage storage;
+
+/**
+ * 仅操作 aliyun 源，其操作不受 role 配置限制
+ */
+@Resource
+private AliyunOssStorage storage;
+
+/**
+ * 仅操作 qiniu 源，其操作不受 role 配置限制
+ */
+@Resource
+private QiniuOssStorage storage;
+
+/**
+ * 仅操作 minio 源，其操作不受 role 配置限制
+ */
+@Resource
+private MinioOssStorage storage;
+
+@Test
+public void putObject() {
+    try {
+        byte[] data = "eyesYeager".getBytes(StandardCharsets.UTF_8);
+        ObjectUploadModel model = storage.putObject(data, "world.txt", "hello");
+        System.out.println(model);
+    } catch (EyesStorageException e) {  
+        e.printStackTrace();
+    }
+}
 ```
