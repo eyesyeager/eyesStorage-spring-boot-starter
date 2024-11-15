@@ -128,6 +128,13 @@ private QiniuOssStorage storage;
 @Resource
 private MinioOssStorage storage;
 
+/**
+ * EyesStorageProperties 存储 eyes-storage 下的所有配置信息
+ * 若内置的 bean 无法满足业务需求，可使用配置信息自行封装工具类
+ */
+@Resource
+private EyesStorageProperties properties;
+
 @Test
 public void putObject() {
     try {
