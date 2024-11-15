@@ -25,7 +25,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @EnableConfigurationProperties(EyesStorageProperties.class)
-@ComponentScan({"com.eyesyeager.eyesStorageStarter.aop"})
+@ComponentScan({"io.github.eyesyeager.eyesStorageStarter.aop"})
 public class EyesStorageAutoConfiguration {
     @Resource
     private EyesStorageProperties eyesToolsProperties;

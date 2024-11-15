@@ -2,13 +2,13 @@
 
 # 快速开始
 
-先引入最新版的 maven 包：
+先引入最新版的 maven 包，最新版本号见：[maven](https://repo1.maven.org/maven2/io/github/eyesyeager/eyesStorage-spring-boot-starter)
 
 ```xml
 <dependency>
     <groupId>io.github.eyesyeager</groupId>
     <artifactId>eyesStorage-spring-boot-starter</artifactId>
-    <version>1.0.0</version>
+    <version>x.x.x</version>
 </dependency>
 ```
 
