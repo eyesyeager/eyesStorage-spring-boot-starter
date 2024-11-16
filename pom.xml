@@ -7,7 +7,7 @@
   <version>1.0.1</version>
   <name>eyesStorage-spring-boot-starter</name>
   <description>multi-source object storage tool for master-slave backup</description>
-  <url>https://github.com/eyesyeager/scratch/eyesStorage-spring-boot-starter</url>
+  <url>https://github.com/eyesyeager/eyesStorage-spring-boot-starter</url>
 
   <licenses>
     <license>
