@@ -5,7 +5,7 @@ import io.github.eyesyeager.eyesStorageStarter.starter.AbstractStorageCondition;
 
 /**
  * @author artonyu
- * @date 2024-11-11 11:13
+ * date 2024-11-11 11:13
  */
 
 public class AliyunStorageCondition extends AbstractStorageCondition {

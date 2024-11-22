@@ -8,7 +8,7 @@ import java.time.ZonedDateTime;
 
 /**
  * @author artonyu
- * @date 2024-11-08 10:28
+ * date 2024-11-08 10:28
  */
 
 public class ObjectMetaDataConvert {

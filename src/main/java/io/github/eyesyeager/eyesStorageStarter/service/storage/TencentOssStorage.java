@@ -29,6 +29,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -38,7 +39,7 @@ import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author artonyu
- * @date 2024-11-11 10:30
+ * date 2024-11-11 10:30
  */
 
 @Slf4j
@@ -100,6 +101,13 @@ public class TencentOssStorage extends AbstractOssStorage {
         }
         log.info("------------------------ key: {}, source: {}, do putObject success ------------------------", key, source);
         return new ObjectUploadModel(result.getKey(), objectName, (long) data.length, Collections.singletonList(source));
+    }
+
+    @Override
+    public ObjectUploadModel putObjectByNetUrl(String netUrl, String objectName, String path, Map<String, String> headerMap) throws EyesStorageException {
+        String key = buildKey(path, objectName);
+        log.info("------------------------ key: {}, source: {}, url: {}, do putObjectByNetUrl start ------------------------", key, source, netUrl);
+        return null;
     }
 
     @Override

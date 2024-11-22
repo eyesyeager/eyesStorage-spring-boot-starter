@@ -2,7 +2,7 @@ package io.github.eyesyeager.eyesStorageStarter.exception;
 
 /**
  * @author artonyu
- * @date 2024-11-08 14:48
+ * date 2024-11-08 14:48
  */
 
 public class EyesStorageException extends Exception {

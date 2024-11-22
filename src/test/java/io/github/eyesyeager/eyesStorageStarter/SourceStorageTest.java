@@ -19,7 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author artonyu
- * @date 2024-11-08 10:26
+ * date 2024-11-08 10:26
  */
 
 @SpringBootTest(classes = {EyesStorageAutoConfiguration.class})
@@ -69,7 +69,9 @@ public class SourceStorageTest {
         try {
             StringBuilder sb = new StringBuilder();
             int size = 10*1024*1024;
-            sb.append("a".repeat(size));
+            for (int i = 0; i < size; i++) {
+                sb.append("a");
+            }
             byte[] data = sb.toString().getBytes(StandardCharsets.UTF_8);
             ObjectUploadModel model = storage.putObject(data, "test.txt", "");
             System.out.println(model);
@@ -98,6 +100,17 @@ public class SourceStorageTest {
             }
             in.close();
             out.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void getObjectByNetUrl() {
+        try {
+            String url = "https://i-blog.csdnimg.cn/blog_migrate/b59fb4da97c9b465e132867c8acb1cd1.png";
+            InputStream is = storage.getObjectByNetUrl(url, null);
+            System.out.println(is);
         } catch (Exception e) {
             e.printStackTrace();
         }

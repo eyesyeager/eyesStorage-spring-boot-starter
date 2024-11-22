@@ -12,7 +12,7 @@ import org.springframework.core.type.AnnotatedTypeMetadata;
 
 /**
  * @author artonyu
- * @date 2024-11-11 10:49
+ * date 2024-11-11 10:49
  */
 
 public abstract class AbstractStorageCondition implements Condition {

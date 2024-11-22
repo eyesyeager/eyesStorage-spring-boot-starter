@@ -13,7 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @author artonyu
- * @date 2024-11-08 10:26
+ * date 2024-11-08 10:26
  */
 
 @SpringBootTest(classes = EyesStorageAutoConfiguration.class)

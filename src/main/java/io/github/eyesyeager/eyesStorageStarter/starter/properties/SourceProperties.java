@@ -6,7 +6,7 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 /**
  * @author artonyu
- * @date 2024-11-08 14:05
+ * date 2024-11-08 14:05
  */
 @Data
 public class SourceProperties {

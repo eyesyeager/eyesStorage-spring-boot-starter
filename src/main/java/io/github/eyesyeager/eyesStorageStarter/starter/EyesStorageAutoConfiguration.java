@@ -20,7 +20,7 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * @author artonyu
- * @date 2024-11-08 10:16
+ * date 2024-11-08 10:16
  */
 
 @Configuration

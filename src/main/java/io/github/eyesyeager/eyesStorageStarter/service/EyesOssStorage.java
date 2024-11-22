@@ -7,14 +7,16 @@ import io.github.eyesyeager.eyesStorageStarter.exception.EyesStorageException;
 import io.github.eyesyeager.eyesStorageStarter.service.observe.FailStrategy;
 import io.github.eyesyeager.eyesStorageStarter.starter.EyesStorageProperties;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @author artonyu
- * @date 2024-11-08 15:34
+ * date 2024-11-08 15:34
  */
 
 public class EyesOssStorage implements OssStorage {
@@ -87,8 +89,31 @@ public class EyesOssStorage implements OssStorage {
     }
 
     @Override
+    public ObjectUploadModel putObjectByNetUrl(String netUrl, String objectName, String path, Map<String, String> headerMap) throws EyesStorageException {
+        ObjectUploadModel result = new ObjectUploadModel();
+        for (OssStorage storage : writeStorages) {
+            ObjectUploadModel model = failStrategy.apply(() -> storage.putObjectByNetUrl(netUrl, objectName, path, headerMap));
+            if (Objects.nonNull(model)) {
+                result.getSource().addAll(model.getSource());
+                result.setKey(model.getKey());
+            }
+        }
+        return result;
+    }
+
+    @Override
     public ObjectDownloadModel getObject(String objectName, String path) throws EyesStorageException {
         return readStorage.getObject(objectName, path);
+    }
+
+    @Override
+    public InputStream getObjectByNetUrl(String netUrl, Map<String, String> headerMap) throws EyesStorageException {
+        return readStorage.getObjectByNetUrl(netUrl, headerMap);
+    }
+
+    @Override
+    public InputStream getObjectByNetUrl(String netUrl, String method, int timeout, Map<String, String> headerMap) throws EyesStorageException {
+        return readStorage.getObjectByNetUrl(netUrl, method, timeout, headerMap);
     }
 
     @Override

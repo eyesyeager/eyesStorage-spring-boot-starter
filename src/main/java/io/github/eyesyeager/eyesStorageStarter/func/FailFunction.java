@@ -4,7 +4,7 @@ import io.github.eyesyeager.eyesStorageStarter.exception.EyesStorageException;
 
 /**
  * @author artonyu
- * @date 2024-11-09 14:25
+ * date 2024-11-09 14:25
  */
 
 @FunctionalInterface

@@ -10,7 +10,7 @@ import java.util.Objects;
  * 七牛云 region 工具类
  * 区域文档见：<a href="https://developer.qiniu.com/kodo/1239/java#5">文件上传</a>
  * @author artonyu
- * @date 2024-11-08 14:52
+ * date 2024-11-08 14:52
  */
 
 public class QiniuRegionUtils {

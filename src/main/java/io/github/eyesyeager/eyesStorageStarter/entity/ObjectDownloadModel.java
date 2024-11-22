@@ -6,7 +6,7 @@ import lombok.Data;
 
 /**
  * @author artonyu
- * @date 2024-11-09 16:20
+ * date 2024-11-09 16:20
  */
 
 @Data

@@ -22,12 +22,14 @@ import io.minio.http.Method;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.Collections;
+import java.util.Map;
+
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author artonyu
- * @date 2024-11-08 10:24
+ * date 2024-11-08 10:24
  */
 
 @Slf4j
@@ -92,6 +94,11 @@ public class MinioOssStorage extends AbstractOssStorage {
         }
         log.info("------------------------ key: {}, source: {}, do putObject success ------------------------", key, source);
         return new ObjectUploadModel(key, objectName, (long)data.length, Collections.singletonList(source));
+    }
+
+    @Override
+    public ObjectUploadModel putObjectByNetUrl(String netUrl, String objectName, String path, Map<String, String> headerMap) throws EyesStorageException {
+        return null;
     }
 
     @Override

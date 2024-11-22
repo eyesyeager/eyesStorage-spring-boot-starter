@@ -5,7 +5,12 @@ import io.github.eyesyeager.eyesStorageStarter.exception.EyesStorageException;
 import io.github.eyesyeager.eyesStorageStarter.func.RetryFunction;
 import io.github.eyesyeager.eyesStorageStarter.starter.properties.OssProperties;
 
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 
@@ -16,7 +21,7 @@ import org.springframework.util.CollectionUtils;
 
 /**
  * @author artonyu
- * @date 2024-11-09 15:11
+ * date 2024-11-09 15:11
  */
 
 @Slf4j
@@ -56,6 +61,42 @@ public abstract class AbstractOssStorage implements OssStorage {
             } else {
                 throw new RuntimeException("the operation with role " + role + " is not defined");
             }
+        }
+    }
+
+    /**
+     * 下载网络文件
+     * 实现 OssStorage 接口方法
+     * @param netUrl        网络链接
+     * @param headerMap     请求头
+     * @return ObjectDownloadModel
+     */
+    public InputStream getObjectByNetUrl(String netUrl, Map<String, String> headerMap) throws EyesStorageException {
+        return getObjectByNetUrl(netUrl, "GET", 10 * 1000, headerMap);
+    }
+
+    /**
+     * 下载网络文件
+     * @param netUrl        网络链接
+     * @param method        请求方式
+     * @param timeout       超时时间（ms）
+     * @param headerMap     请求头
+     * @return InputStream
+     */
+    public InputStream getObjectByNetUrl(String netUrl, String method, int timeout, Map<String, String> headerMap) throws EyesStorageException {
+        try {
+            URL url = new URL(netUrl);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod(method);
+            conn.setConnectTimeout(timeout);
+            if (Objects.nonNull(headerMap)) {
+                for (String key : headerMap.keySet()) {
+                    conn.setRequestProperty(key, headerMap.get(key));
+                }
+            }
+            return conn.getInputStream();
+        } catch (Exception e) {
+            throw new EyesStorageException(e);
         }
     }
 

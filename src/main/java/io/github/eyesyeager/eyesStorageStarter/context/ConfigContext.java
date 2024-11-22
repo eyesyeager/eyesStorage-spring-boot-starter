@@ -2,7 +2,7 @@ package io.github.eyesyeager.eyesStorageStarter.context;
 
 /**
  * @author artonyu
- * @date 2024-11-08 10:19
+ * date 2024-11-08 10:19
  */
 
 public class ConfigContext {
@@ -61,6 +61,12 @@ public class ConfigContext {
 
     // 系统默认时区
     public static final String ZONE_ID = "+08:00";
+
+    // 下载网络文件时的默认请求方式
+    public static final String GET_NET_OBJECT_DEFAULT_METHOD = "GET";
+
+    // 下载网络文件时的默认超时时间（ms）
+    public static final int GET_NET_OBJECT_DEFAULT_TIMEOUT = 60 * 1000;
 
     // 腾讯云默认传输线程
     public static final Integer TENCENT_DEFAULT_TRANSFER_THREAD_NUM = 1;

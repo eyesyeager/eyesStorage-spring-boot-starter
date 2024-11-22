@@ -13,7 +13,7 @@ import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
 /**
  * 压缩工具类
  * @author artonyu
- * @date 2024-11-13 11:37
+ * date 2024-11-13 11:37
  */
 
 public class CompressUtils {

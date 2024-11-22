@@ -5,7 +5,7 @@ import io.github.eyesyeager.eyesStorageStarter.starter.AbstractStorageCondition;
 
 /**
  * @author artonyu
- * @date 2024-11-08 16:37
+ * date 2024-11-08 16:37
  */
 
 public class QiniuStorageCondition extends AbstractStorageCondition {

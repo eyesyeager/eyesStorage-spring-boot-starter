@@ -26,6 +26,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Map;
 
 import io.github.eyesyeager.eyesStorageStarter.starter.EyesStorageProperties;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +34,7 @@ import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author artonyu
- * @date 2024-11-11 10:32
+ * date 2024-11-11 10:32
  */
 
 @Slf4j
@@ -88,6 +89,11 @@ public class AliyunOssStorage extends AbstractOssStorage {
         }
         log.info("------------------------ key: {}, source: {}, do putObject success ------------------------", key, source);
         return new ObjectUploadModel(key, objectName, (long) data.length, Collections.singletonList(source));
+    }
+
+    @Override
+    public ObjectUploadModel putObjectByNetUrl(String netUrl, String objectName, String path, Map<String, String> headerMap) throws EyesStorageException {
+        return null;
     }
 
     @Override

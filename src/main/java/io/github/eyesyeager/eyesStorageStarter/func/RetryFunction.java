@@ -2,7 +2,7 @@ package io.github.eyesyeager.eyesStorageStarter.func;
 
 /**
  * @author artonyu
- * @date 2024-11-09 15:24
+ * date 2024-11-09 15:24
  */
 
 @FunctionalInterface

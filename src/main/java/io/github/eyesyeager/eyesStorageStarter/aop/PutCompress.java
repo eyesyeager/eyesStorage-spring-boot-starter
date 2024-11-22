@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 
 /**
  * @author artonyu
- * @date 2024-11-13 14:31
+ * date 2024-11-13 14:31
  */
 
 @Target(ElementType.METHOD)

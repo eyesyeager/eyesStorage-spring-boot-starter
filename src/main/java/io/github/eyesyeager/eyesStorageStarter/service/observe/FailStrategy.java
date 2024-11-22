@@ -8,7 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * 失败策略
  * @author artonyu
- * @date 2024-11-09 14:16
+ * date 2024-11-09 14:16
  */
 
 @Slf4j

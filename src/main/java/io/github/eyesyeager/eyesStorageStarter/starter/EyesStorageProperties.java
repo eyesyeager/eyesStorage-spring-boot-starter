@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * @author artonyu
- * @date 2024-11-08 10:17
+ * date 2024-11-08 10:17
  */
 
 @Data
