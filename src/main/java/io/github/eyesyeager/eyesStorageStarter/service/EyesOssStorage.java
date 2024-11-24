@@ -77,9 +77,48 @@ public class EyesOssStorage implements OssStorage {
 
     @Override
     public ObjectUploadModel putObject(byte[] data, String objectName, String path) throws EyesStorageException {
-        ObjectUploadModel result = new ObjectUploadModel("", objectName, (long)data.length, new ArrayList<>());
+        ObjectUploadModel result = new ObjectUploadModel("", objectName, new ArrayList<>());
         for (OssStorage storage : writeStorages) {
             ObjectUploadModel model = failStrategy.apply(() -> storage.putObject(data, objectName, path));
+            if (Objects.nonNull(model)) {
+                result.getSource().addAll(model.getSource());
+                result.setKey(model.getKey());
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public ObjectUploadModel putObject(InputStream is, String objectName, String path) throws EyesStorageException {
+        ObjectUploadModel result = new ObjectUploadModel("", objectName, new ArrayList<>());
+        for (OssStorage storage : writeStorages) {
+            ObjectUploadModel model = failStrategy.apply(() -> storage.putObject(is, objectName, path));
+            if (Objects.nonNull(model)) {
+                result.getSource().addAll(model.getSource());
+                result.setKey(model.getKey());
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public ObjectUploadModel putObject(InputStream is, String objectName, String path, Long length) throws EyesStorageException {
+        ObjectUploadModel result = new ObjectUploadModel("", objectName, new ArrayList<>());
+        for (OssStorage storage : writeStorages) {
+            ObjectUploadModel model = failStrategy.apply(() -> storage.putObject(is, objectName, path, length));
+            if (Objects.nonNull(model)) {
+                result.getSource().addAll(model.getSource());
+                result.setKey(model.getKey());
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public ObjectUploadModel putObjectByNetUrl(String netUrl, String objectName, String path) throws EyesStorageException {
+        ObjectUploadModel result = new ObjectUploadModel();
+        for (OssStorage storage : writeStorages) {
+            ObjectUploadModel model = failStrategy.apply(() -> storage.putObjectByNetUrl(netUrl, objectName, path));
             if (Objects.nonNull(model)) {
                 result.getSource().addAll(model.getSource());
                 result.setKey(model.getKey());
@@ -93,6 +132,19 @@ public class EyesOssStorage implements OssStorage {
         ObjectUploadModel result = new ObjectUploadModel();
         for (OssStorage storage : writeStorages) {
             ObjectUploadModel model = failStrategy.apply(() -> storage.putObjectByNetUrl(netUrl, objectName, path, headerMap));
+            if (Objects.nonNull(model)) {
+                result.getSource().addAll(model.getSource());
+                result.setKey(model.getKey());
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public ObjectUploadModel putObjectByNetUrl(String netUrl, String objectName, String path, String method, int timeout, Map<String, String> headerMap) throws EyesStorageException {
+        ObjectUploadModel result = new ObjectUploadModel();
+        for (OssStorage storage : writeStorages) {
+            ObjectUploadModel model = failStrategy.apply(() -> storage.putObjectByNetUrl(netUrl, objectName, path, method, timeout, headerMap));
             if (Objects.nonNull(model)) {
                 result.getSource().addAll(model.getSource());
                 result.setKey(model.getKey());

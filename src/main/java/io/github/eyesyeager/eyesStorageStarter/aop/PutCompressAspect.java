@@ -5,6 +5,8 @@ import io.github.eyesyeager.eyesStorageStarter.starter.EyesStorageProperties;
 import io.github.eyesyeager.eyesStorageStarter.starter.properties.OssProperties;
 import io.github.eyesyeager.eyesStorageStarter.starter.properties.SourceProperties;
 import io.github.eyesyeager.eyesStorageStarter.utils.CompressUtils;
+
+import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Objects;
@@ -63,7 +65,13 @@ public class PutCompressAspect {
         }
         // 执行压缩
         Object[] args = pjp.getArgs();
-        args[0] = CompressUtils.compressObject((byte[]) args[0]);
+        if (args[0] instanceof byte[]) {
+            args[0] = CompressUtils.compressObject((byte[]) args[0]);
+        } else if (args[0] instanceof InputStream) {
+            args[0] = CompressUtils.compressObject((InputStream) args[0]);
+        } else {
+            throw new RuntimeException("only byte[] and InputStream can be compressed");
+        }
         args[1] = CompressUtils.getCompressObjectName((String) args[1]);
         return pjp.proceed(args);
     }

@@ -29,12 +29,10 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Collections;
 import java.util.Date;
-import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
 import io.github.eyesyeager.eyesStorageStarter.starter.EyesStorageProperties;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -42,7 +40,6 @@ import org.apache.commons.lang3.StringUtils;
  * date 2024-11-11 10:30
  */
 
-@Slf4j
 public class TencentOssStorage extends AbstractOssStorage {
 
     private final TencentProperties tencentProperties;
@@ -82,32 +79,32 @@ public class TencentOssStorage extends AbstractOssStorage {
     @Override
     @PutCompress(ConfigContext.SOURCE_TENCENT)
     public ObjectUploadModel putObject(byte[] data, String objectName, String path) throws EyesStorageException {
-        String key = buildKey(path, objectName);
-        log.info("------------------------ key: {}, source: {}, do putObject start ------------------------", key, source);
         InputStream inputStream = new ByteArrayInputStream(data);
-        ObjectMetadata objectMetadata = new ObjectMetadata();
-        objectMetadata.setContentLength(data.length);
-        PutObjectRequest putObjectRequest = new PutObjectRequest(properties.getBucket(), key, inputStream, objectMetadata);
-
-        UploadResult result;
-        try {
-            result = retry(() -> {
-                Upload upload = transferManager.upload(putObjectRequest);
-                return upload.waitForUploadResult();
-            });
-        } catch (Exception e) {
-            log.info("------------------------ key: {}, source: {}, do putObject fail ------------------------", key, source);
-            throw new EyesStorageException(e);
-        }
-        log.info("------------------------ key: {}, source: {}, do putObject success ------------------------", key, source);
-        return new ObjectUploadModel(result.getKey(), objectName, (long) data.length, Collections.singletonList(source));
+        return putObject(inputStream, objectName, path, (long) data.length);
     }
 
     @Override
-    public ObjectUploadModel putObjectByNetUrl(String netUrl, String objectName, String path, Map<String, String> headerMap) throws EyesStorageException {
+    @PutCompress(ConfigContext.SOURCE_TENCENT)
+    public ObjectUploadModel putObject(InputStream is, String objectName, String path) throws EyesStorageException {
+        // 腾讯云要求元数据最好指定 contentLength，否则无法使用分块上传
+        // 因此若能获取对象准确大小，建议用 putObject(InputStream, String, String, Long)
+        return putObject(is, objectName, path, null);
+    }
+
+    @Override
+    @PutCompress(ConfigContext.SOURCE_TENCENT)
+    public ObjectUploadModel putObject(InputStream is, String objectName, String path, Long length) throws EyesStorageException {
+        ObjectMetadata objectMetadata = new ObjectMetadata();
+        if (Objects.nonNull(length)) {
+            objectMetadata.setContentLength(length);
+        }
         String key = buildKey(path, objectName);
-        log.info("------------------------ key: {}, source: {}, url: {}, do putObjectByNetUrl start ------------------------", key, source, netUrl);
-        return null;
+        PutObjectRequest putObjectRequest = new PutObjectRequest(properties.getBucket(), key, is, objectMetadata);
+        UploadResult result = retry(() -> {
+            Upload upload = transferManager.upload(putObjectRequest);
+            return upload.waitForUploadResult();
+        });
+        return new ObjectUploadModel(result.getKey(), objectName, Collections.singletonList(source));
     }
 
     @Override
@@ -131,6 +128,7 @@ public class TencentOssStorage extends AbstractOssStorage {
 
     /**
      * 创建 COS 客户端
+     *
      * @return COSClient
      */
     private COSClient createCosClient() {
@@ -141,6 +139,7 @@ public class TencentOssStorage extends AbstractOssStorage {
 
     /**
      * 创建 TransferManager 实例，这个实例用来后续调用高级接口
+     *
      * @return TransferManager
      */
     private TransferManager createTransferManager() {

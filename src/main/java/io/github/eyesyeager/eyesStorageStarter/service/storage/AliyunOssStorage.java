@@ -26,10 +26,8 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Collections;
 import java.util.Date;
-import java.util.Map;
-
+import java.util.Objects;
 import io.github.eyesyeager.eyesStorageStarter.starter.EyesStorageProperties;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -37,7 +35,6 @@ import org.apache.commons.lang3.StringUtils;
  * date 2024-11-11 10:32
  */
 
-@Slf4j
 public class AliyunOssStorage extends AbstractOssStorage {
 
     private final OSS ossClient;
@@ -77,23 +74,27 @@ public class AliyunOssStorage extends AbstractOssStorage {
     @Override
     @PutCompress(ConfigContext.SOURCE_ALIYUN)
     public ObjectUploadModel putObject(byte[] data, String objectName, String path) throws EyesStorageException {
-        String key = buildKey(path, objectName);
-        log.info("------------------------ key: {}, source: {}, do putObject start ------------------------", key, source);
-        try {
-            InputStream inputStream = new ByteArrayInputStream(data);
-            PutObjectRequest putObjectRequest = new PutObjectRequest(properties.getBucket(), key, inputStream);
-            retry(() -> ossClient.putObject(putObjectRequest));
-        } catch (Exception e) {
-            log.info("------------------------ key: {}, source: {}, do putObject fail ------------------------", key, source);
-            throw new EyesStorageException(e);
-        }
-        log.info("------------------------ key: {}, source: {}, do putObject success ------------------------", key, source);
-        return new ObjectUploadModel(key, objectName, (long) data.length, Collections.singletonList(source));
+        InputStream inputStream = new ByteArrayInputStream(data);
+        return putObject(inputStream, objectName, path, (long) data.length);
     }
 
     @Override
-    public ObjectUploadModel putObjectByNetUrl(String netUrl, String objectName, String path, Map<String, String> headerMap) throws EyesStorageException {
-        return null;
+    @PutCompress(ConfigContext.SOURCE_ALIYUN)
+    public ObjectUploadModel putObject(InputStream is, String objectName, String path) throws EyesStorageException {
+        return putObject(is, objectName, path, null);
+    }
+
+    @Override
+    @PutCompress(ConfigContext.SOURCE_ALIYUN)
+    public ObjectUploadModel putObject(InputStream is, String objectName, String path, Long length) throws EyesStorageException {
+        ObjectMetadata objectMetadata = new ObjectMetadata();
+        if (Objects.nonNull(length)) {
+            objectMetadata.setContentLength(length);
+        }
+        String key = buildKey(path, objectName);
+        PutObjectRequest putObjectRequest = new PutObjectRequest(properties.getBucket(), key, is, objectMetadata);
+        retry(() -> ossClient.putObject(putObjectRequest));
+        return new ObjectUploadModel(key, objectName, Collections.singletonList(source));
     }
 
     @Override
@@ -112,6 +113,7 @@ public class AliyunOssStorage extends AbstractOssStorage {
 
     /**
      * 获取oss客户端
+     *
      * @return OSS
      */
     private OSS getOssClient() {

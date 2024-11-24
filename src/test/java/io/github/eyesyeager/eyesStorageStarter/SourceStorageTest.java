@@ -5,6 +5,7 @@ import io.github.eyesyeager.eyesStorageStarter.entity.ObjectMetaData;
 import io.github.eyesyeager.eyesStorageStarter.entity.ObjectUploadModel;
 import io.github.eyesyeager.eyesStorageStarter.exception.EyesStorageException;
 import io.github.eyesyeager.eyesStorageStarter.service.storage.MinioOssStorage;
+import io.github.eyesyeager.eyesStorageStarter.service.storage.QiniuOssStorage;
 import io.github.eyesyeager.eyesStorageStarter.starter.EyesStorageAutoConfiguration;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -12,6 +13,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import javax.annotation.Resource;
 
 import org.junit.jupiter.api.Test;
@@ -25,11 +28,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest(classes = {EyesStorageAutoConfiguration.class})
 public class SourceStorageTest {
 
-    @Resource
-    private MinioOssStorage storage;
-
 //    @Resource
-//    private QiniuOssStorage storage;
+//    private MinioOssStorage storage;
+
+    @Resource
+    private QiniuOssStorage storage;
 
 //    @Resource
 //    private TencentOssStorage storage;
@@ -108,9 +111,36 @@ public class SourceStorageTest {
     @Test
     public void getObjectByNetUrl() {
         try {
+            String objectName = "hello.png";
             String url = "https://i-blog.csdnimg.cn/blog_migrate/b59fb4da97c9b465e132867c8acb1cd1.png";
             InputStream is = storage.getObjectByNetUrl(url, null);
-            System.out.println(is);
+            File file = new File(objectName);
+            if(!file.exists()) {
+                file.createNewFile();
+            }
+            BufferedInputStream in;
+            BufferedOutputStream out;
+            in = new BufferedInputStream(is);
+            out = new BufferedOutputStream(Files.newOutputStream(Paths.get(objectName)));
+            int len = -1;
+            byte[] b = new byte[10 * 1024];
+            while((len = in.read(b)) != -1){
+                out.write(b,0, len);
+            }
+            in.close();
+            out.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void putObjectByNetUrl() {
+        try {
+            String objectName = "hello.png";
+            String url = "https://i-blog.csdnimg.cn/blog_migrate/b59fb4da97c9b465e132867c8acb1cd1.png";
+            ObjectUploadModel model = storage.putObjectByNetUrl(url, objectName, "");
+            System.out.println(model);
         } catch (Exception e) {
             e.printStackTrace();
         }

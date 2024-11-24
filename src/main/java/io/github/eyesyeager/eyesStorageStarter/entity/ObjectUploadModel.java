@@ -18,7 +18,5 @@ public class ObjectUploadModel {
 
     private String objectName;
 
-    private Long size;
-
     private List<String> source;
 }
