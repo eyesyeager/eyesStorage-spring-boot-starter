@@ -4,7 +4,7 @@
 
   <groupId>io.github.eyesyeager</groupId>
   <artifactId>eyesStorage-spring-boot-starter</artifactId>
-  <version>1.1.0</version>
+  <version>1.1.1</version>
   <name>eyesStorage-spring-boot-starter</name>
   <description>multi-source object storage tool for master-slave backup</description>
   <url>https://github.com/eyesyeager/eyesStorage-spring-boot-starter</url>

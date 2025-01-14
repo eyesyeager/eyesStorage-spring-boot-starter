@@ -74,8 +74,8 @@ public class ConfigContext {
      *******************************************************************************
      */
 
-    // minio 上传文件分块大小，单位 b，仅在无法获取分块大小时使用
-    public static final long MINIO_UPLOAD_PART_SIZE = 1 * 1024 * 1024;
+    // minio 上传文件分块大小，单位 b，仅在无法获取分块大小时使用，范围为 5MB-5GB
+    public static final long MINIO_UPLOAD_PART_SIZE = 5 * 1024 * 1024;
 
     /*
      *******************************************************************************
