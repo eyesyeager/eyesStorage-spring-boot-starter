@@ -79,7 +79,7 @@ public class QiniuOssStorage extends AbstractOssStorage {
     @Override
     @PutCompress(ConfigContext.SOURCE_QINIU)
     public ObjectUploadModel putObject(InputStream is, String objectName, String path, Long length) throws EyesStorageException {
-                Region region = QiniuRegionUtils.getRegion(qiniuProperties.getRegion());
+        Region region = QiniuRegionUtils.getRegion(qiniuProperties.getRegion());
         Configuration cfg = new Configuration(region);
         cfg.resumableUploadAPIVersion = Configuration.ResumableUploadAPIVersion.V2;
         UploadManager uploadManager = new UploadManager(cfg);
